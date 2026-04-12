@@ -17,9 +17,11 @@ def get_indonesia_boundary(con):
     # Try known country name fields in order
     for field in ("ADMIN", "NAME", "name", "NAME_EN"):
         if field in col_names:
+            # detect geometry column name (geom or geometry)
+            geom_col = "geom" if "geom" in col_names else "geometry"
             con.execute(f"""
                 CREATE OR REPLACE TABLE indonesia AS
-                SELECT geometry FROM ST_Read('/tmp/countries.geojson')
+                SELECT {geom_col} AS geometry FROM ST_Read('/tmp/countries.geojson')
                 WHERE {field} = 'Indonesia'
             """)
             click.echo(f"Indonesia boundary loaded (field: {field})")

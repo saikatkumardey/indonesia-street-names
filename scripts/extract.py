@@ -21,7 +21,8 @@ def get_indonesia_boundary(con):
             geom_col = "geom" if "geom" in col_names else "geometry"
             con.execute(f"""
                 CREATE OR REPLACE TABLE indonesia AS
-                SELECT {geom_col} AS geometry FROM ST_Read('/tmp/countries.geojson')
+                SELECT ST_Simplify({geom_col}, 0.01) AS geometry
+                FROM ST_Read('/tmp/countries.geojson')
                 WHERE {field} = 'Indonesia'
             """)
             click.echo(f"Indonesia boundary loaded (field: {field})")
@@ -50,6 +51,8 @@ def extract(release, output, sample, sample_size):
     con.execute("INSTALL httpfs; LOAD httpfs;")
     con.execute("INSTALL spatial; LOAD spatial;")
     con.execute("SET s3_region='us-west-2';")
+    con.execute("SET memory_limit='6GB';")
+    con.execute("SET threads=4;")
 
     get_indonesia_boundary(con)
 

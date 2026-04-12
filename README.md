@@ -23,4 +23,3 @@ The CSV is committed back to this repo automatically.
 Overture Maps Foundation transportation/segment layer, release `2026-03-18.0`.  
 License: [ODbL 1.0](https://opendatacommons.org/licenses/odbl/)
 
-Built by [Saikat Kumar Dey](https://saikatkumardey.com)

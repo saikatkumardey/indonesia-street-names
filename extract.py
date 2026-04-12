@@ -10,7 +10,7 @@ con.execute("SET s3_region='us-west-2';")
 print("Running extraction...", flush=True)
 con.execute("""
 COPY (
-    SELECT DISTINCT
+    SELECT DISTINCT ON (names.primary)
         names.primary AS street_name,
         regexp_replace(
             regexp_replace(sources[1].record_id, '^w', ''),

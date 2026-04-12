@@ -1,0 +1,40 @@
+name: Generate Map
+
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows: ["Extract Indonesia Street Names"]
+    types: [completed]
+
+permissions:
+  contents: write
+
+jobs:
+  visualize:
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install duckdb matplotlib shapely numpy pandas
+
+      - name: Generate map
+        run: python visualize.py
+
+      - name: Commit map
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add map.png
+          git diff --staged --quiet || git commit -m "update map.png [$(date -u +%Y-%m-%d)]"
+          git push

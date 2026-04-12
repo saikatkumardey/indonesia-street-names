@@ -44,6 +44,6 @@ fig.text(0.02, 0.04, 'Every Named Street in Indonesia', color='#c8a96e',
 fig.text(0.02, 0.01, 'Source: Overture Maps Foundation', color='#666666',
          fontsize=8, fontfamily='monospace')
 
-plt.savefig('map.png', dpi=150, bbox_inches='tight',
+plt.savefig('map.png', dpi=300, bbox_inches='tight',
             facecolor='#0a0a0a', edgecolor='none')
 print("map.png saved", flush=True)

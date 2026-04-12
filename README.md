@@ -1,5 +1,7 @@
 # Indonesia Street Names
 
+![Every named street in Indonesia](map.png)
+
 A dataset of every named street in Indonesia, extracted from [Overture Maps](https://overturemaps.org/).
 
 ## Dataset

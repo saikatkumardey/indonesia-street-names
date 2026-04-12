@@ -42,17 +42,17 @@ COPY (
       AND names.primary != ''
       AND ST_Within(ST_Centroid(s.geometry), i.geometry)
     ORDER BY street_name
-) TO 'indonesia_streets.parquet' (FORMAT parquet, COMPRESSION 'zstd');
+) TO 'data/indonesia_streets.parquet' (FORMAT parquet, COMPRESSION 'zstd');
 """)
 
-count = con.execute("SELECT count(*) FROM 'indonesia_streets.parquet'").fetchone()[0]
+count = con.execute("SELECT count(*) FROM 'data/indonesia_streets.parquet'").fetchone()[0]
 print(f"Done! {count:,} rows", flush=True)
 
 print("Writing sample...", flush=True)
 con.execute("""
 COPY (
     SELECT street_name, osm_way_id, source_dataset
-    FROM 'indonesia_streets.parquet'
+    FROM 'data/indonesia_streets.parquet'
     LIMIT 100
-) TO 'sample.csv' (HEADER, DELIMITER ',');
+) TO 'data/sample.csv' (HEADER, DELIMITER ',');
 """)

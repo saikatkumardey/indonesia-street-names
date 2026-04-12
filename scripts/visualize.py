@@ -7,7 +7,7 @@ import colorcet
 from shapely import wkt
 
 print("Loading geometries...", flush=True)
-df = duckdb.query("SELECT geometry_wkt FROM 'indonesia_streets.parquet' WHERE geometry_wkt IS NOT NULL").df()
+df = duckdb.query("SELECT geometry_wkt FROM 'data/indonesia_streets.parquet' WHERE geometry_wkt IS NOT NULL").df()
 print(f"{len(df):,} rows", flush=True)
 
 print("Expanding to coordinate arrays...", flush=True)
@@ -40,5 +40,5 @@ img = tf.shade(agg, cmap=colorcet.fire, how='log')
 img = tf.set_background(img, 'black')
 
 print("Saving map.png...", flush=True)
-img.to_pil().save('map.png', dpi=(300, 300))
+img.to_pil().save('data/map.png', dpi=(300, 300))
 print("Done", flush=True)

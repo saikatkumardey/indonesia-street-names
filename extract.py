@@ -29,7 +29,7 @@ COPY (
       AND names.primary NOT LIKE '%*%'
       AND names.primary != ''
     ORDER BY street_name
-) TO 'indonesia_streets.csv.gz' (HEADER, DELIMITER ',', COMPRESSION 'gzip');
+) TO 'indonesia_streets.parquet' (FORMAT parquet, COMPRESSION 'zstd');
 """)
 
 result = subprocess.run(['wc', '-l', 'indonesia_streets.csv'], capture_output=True, text=True)

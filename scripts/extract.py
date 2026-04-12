@@ -70,5 +70,24 @@ def extract(release, output, sample, sample_size):
     click.echo("Done.")
 
 
+@cli.command()
+@click.option("--input", "input_path", default="data/indonesia_streets.parquet", show_default=True, help="Source parquet path")
+@click.option("--output", default="data/sample.csv", show_default=True, help="Output CSV path")
+@click.option("--size", default=100, show_default=True, help="Number of rows")
+def sample(input_path, output, size):
+    """Regenerate sample.csv from existing parquet."""
+    con = duckdb.connect()
+    count = con.execute(f"SELECT count(*) FROM '{input_path}'").fetchone()[0]
+    click.echo(f"Source: {count:,} rows")
+    con.execute(f"""
+    COPY (
+        SELECT street_name, osm_way_id, source_dataset
+        FROM '{input_path}'
+        LIMIT {size}
+    ) TO '{output}' (HEADER, DELIMITER ',');
+    """)
+    click.echo(f"Written {size} rows to {output}")
+
+
 if __name__ == "__main__":
     cli()

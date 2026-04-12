@@ -6,8 +6,9 @@ A dataset of every named street in Indonesia, extracted from [Overture Maps](htt
 
 `indonesia_streets.csv` — columns:
 - `street_name` — unique street name (deduplicated)
-- `osm_way_id` — source OSM way ID (where applicable)
+- `osm_way_id` — source OSM way ID number (where applicable)
 - `source_dataset` — data source (e.g. OpenStreetMap)
+- `geometry_wkt` — road geometry as WKT LineString
 
 ## Updating
 

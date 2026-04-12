@@ -1,10 +1,10 @@
 import duckdb
 import subprocess
-import sys
 
 print("Connecting...", flush=True)
 con = duckdb.connect()
 con.execute("INSTALL httpfs; LOAD httpfs;")
+con.execute("INSTALL spatial; LOAD spatial;")
 con.execute("SET s3_region='us-west-2';")
 
 print("Running extraction...", flush=True)
@@ -12,8 +12,12 @@ con.execute("""
 COPY (
     SELECT DISTINCT
         names.primary AS street_name,
-        regexp_replace(sources[1].record_id, '@[0-9]+$', '') AS osm_way_id,
-        sources[1].dataset AS source_dataset
+        regexp_replace(
+            regexp_replace(sources[1].record_id, '^w', ''),
+            '@[0-9]+$', ''
+        ) AS osm_way_id,
+        sources[1].dataset AS source_dataset,
+        ST_AsText(ST_GeomFromWKB(geometry)) AS geometry_wkt
     FROM read_parquet(
         's3://overturemaps-us-west-2/release/2026-03-18.0/theme=transportation/type=segment/*',
         hive_partitioning=1

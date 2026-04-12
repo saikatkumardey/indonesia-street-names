@@ -4,7 +4,7 @@ A dataset of every named street in Indonesia, extracted from [Overture Maps](htt
 
 ## Dataset
 
-`indonesia_streets.csv` — columns:
+`indonesia_streets.csv.gz` (~40-60MB gzip compressed, ~334MB uncompressed) — columns:
 - `street_name` — unique street name (deduplicated)
 - `osm_way_id` — source OSM way ID number (where applicable)
 - `source_dataset` — data source (e.g. OpenStreetMap)

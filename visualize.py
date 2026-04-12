@@ -1,49 +1,44 @@
 import duckdb
-import pandas as pd
-import matplotlib.pyplot as plt
-import matplotlib.collections as mc
-from shapely import wkt
 import numpy as np
-import sys
+import pandas as pd
+import datashader as ds
+import datashader.transfer_functions as tf
+import colorcet
+from shapely import wkt
 
-print("Loading parquet...", flush=True)
+print("Loading geometries...", flush=True)
 df = duckdb.query("SELECT geometry_wkt FROM 'indonesia_streets.parquet' WHERE geometry_wkt IS NOT NULL").df()
-print(f"{len(df)} rows loaded", flush=True)
+print(f"{len(df):,} rows", flush=True)
 
-print("Parsing geometries...", flush=True)
-lines = []
-for geom_str in df['geometry_wkt']:
+print("Expanding to coordinate arrays...", flush=True)
+xs, ys = [], []
+for geom_str in df.geometry_wkt:
     try:
         geom = wkt.loads(geom_str)
         if geom.geom_type == 'LineString':
-            lines.append(np.array(geom.coords))
+            coords = list(geom.coords)
         elif geom.geom_type == 'MultiLineString':
-            for part in geom.geoms:
-                lines.append(np.array(part.coords))
+            coords = [c for part in geom.geoms for c in list(part.coords)]
+        else:
+            continue
+        for x, y in coords:
+            xs.append(x)
+            ys.append(y)
+        xs.append(np.nan)
+        ys.append(np.nan)
     except Exception:
         continue
 
-print(f"{len(lines)} line segments parsed", flush=True)
+lines = pd.DataFrame({'x': xs, 'y': ys})
+print(f"{len(lines):,} coordinate points", flush=True)
 
-print("Rendering map...", flush=True)
-fig, ax = plt.subplots(figsize=(24, 14), facecolor='#0a0a0a')
-ax.set_facecolor('#0a0a0a')
+print("Rendering...", flush=True)
+cvs = ds.Canvas(plot_width=4000, plot_height=2333,
+                x_range=(95, 141), y_range=(-11, 6))
+agg = cvs.line(lines, 'x', 'y', ds.count())
+img = tf.shade(agg, cmap=colorcet.fire, how='log')
+img = tf.set_background(img, 'black')
 
-# Render as line collection for speed
-lc = mc.LineCollection(lines, linewidths=0.08, colors='#c8a96e', alpha=0.4)
-ax.add_collection(lc)
-
-# Set bounds to Indonesia
-ax.set_xlim(95, 141)
-ax.set_ylim(-11, 6)
-ax.set_aspect('equal')
-ax.axis('off')
-
-fig.text(0.02, 0.04, 'Every Named Street in Indonesia', color='#c8a96e',
-         fontsize=14, fontfamily='monospace', alpha=0.8)
-fig.text(0.02, 0.01, 'Source: Overture Maps Foundation', color='#666666',
-         fontsize=8, fontfamily='monospace')
-
-plt.savefig('map.png', dpi=300, bbox_inches='tight',
-            facecolor='#0a0a0a', edgecolor='none')
-print("map.png saved", flush=True)
+print("Saving map.png...", flush=True)
+img.to_pil().save('map.png', dpi=(300, 300))
+print("Done", flush=True)

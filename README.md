@@ -7,16 +7,19 @@ A dataset of every named street in Indonesia, extracted from [Overture Maps](htt
 ## Dataset
 
 `indonesia_streets.parquet` (~20-30MB, zstd compressed) — columns:
+
 - `street_name` — unique street name (deduplicated)
 - `osm_way_id` — source OSM way ID number (where applicable)
 - `source_dataset` — data source (e.g. OpenStreetMap)
 - `geometry_wkt` — road geometry as WKT LineString
 
+`sample.csv` — 100 rows preview, no geometry.
+
 ## Updating
 
-Run the workflow manually via GitHub Actions: **Actions → Extract Indonesia Street Names → Run workflow**
-
-The CSV is committed back to this repo automatically.
+Two independent workflows under **Actions**:
+- **Extract Indonesia Street Names** — re-runs the full extraction, commits fresh parquet + sample
+- **Generate Map** — regenerates `map.png` from the parquet (also auto-triggers after extract)
 
 ## Source
 

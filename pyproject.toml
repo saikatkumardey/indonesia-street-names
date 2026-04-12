@@ -9,5 +9,6 @@ dependencies = [
     "duckdb",
     "numpy",
     "pandas",
+    "pillow",
     "shapely",
 ]

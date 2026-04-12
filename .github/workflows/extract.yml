@@ -14,19 +14,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - uses: astral-sh/setup-uv@v5
         with:
           python-version: '3.11'
 
       - name: Install dependencies
-        run: pip install duckdb
+        run: uv sync
 
       - name: Run extraction
-        run: python extract.py
+        run: uv run python extract.py
 
       - name: Show row count
-        run: python3 -c "import duckdb; print(duckdb.query('SELECT count(*) FROM read_parquet(\'indonesia_streets.parquet\')').fetchone()[0], 'rows')"
+        run: uv run python -c "import duckdb; print(duckdb.query('SELECT count(*) FROM read_parquet(\'indonesia_streets.parquet\')').fetchone()[0], 'rows')"
 
       - name: Commit results
         run: |

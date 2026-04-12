@@ -20,16 +20,15 @@ jobs:
         with:
           ref: main
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - uses: astral-sh/setup-uv@v5
         with:
           python-version: '3.11'
 
       - name: Install dependencies
-        run: pip install duckdb matplotlib shapely numpy pandas
+        run: uv sync
 
       - name: Generate map
-        run: python visualize.py
+        run: uv run python visualize.py
 
       - name: Commit map
         run: |

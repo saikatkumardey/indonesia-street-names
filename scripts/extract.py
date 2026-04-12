@@ -74,7 +74,7 @@ def extract(release, output, sample, sample_size):
           AND length(trim(names.primary)) > 1
           AND names.primary NOT LIKE '%*%'
           AND names.primary != ''
-          AND ST_Within(ST_Centroid(s.geometry), i.geometry)
+          AND ST_Within(ST_Centroid(s.geometry), ST_SetCRS(i.geometry, 'OGC:CRS84'))
         ORDER BY street_name
     ) TO '{output}' (FORMAT parquet, COMPRESSION 'zstd');
     """)

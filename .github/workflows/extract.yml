@@ -22,10 +22,7 @@ jobs:
         run: uv sync
 
       - name: Run extraction
-        run: uv run python scripts/extract.py
-
-      - name: Show row count
-        run: uv run python -c "import duckdb; print(duckdb.query('SELECT count(*) FROM read_parquet(\'data/indonesia_streets.parquet\')').fetchone()[0], 'rows')"
+        run: uv run python scripts/extract.py extract
 
       - name: Commit results
         run: |

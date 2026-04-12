@@ -3,10 +3,11 @@ name = "indonesia-street-names"
 version = "0.1.0"
 requires-python = ">=3.11"
 dependencies = [
-    "duckdb",
-    "datashader",
+    "click",
     "colorcet",
-    "shapely",
+    "datashader",
+    "duckdb",
     "numpy",
     "pandas",
+    "shapely",
 ]

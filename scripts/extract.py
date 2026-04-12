@@ -1,58 +1,95 @@
 import duckdb
 import urllib.request
-import subprocess
+import click
+import os
 
-print("Connecting...", flush=True)
-con = duckdb.connect()
-con.execute("INSTALL httpfs; LOAD httpfs;")
-con.execute("INSTALL spatial; LOAD spatial;")
-con.execute("SET s3_region='us-west-2';")
 
-print("Fetching Indonesia boundary...", flush=True)
-url = "https://raw.githubusercontent.com/datasets/geo-countries/master/data/countries.geojson"
-urllib.request.urlretrieve(url, "countries.geojson")
-con.execute("""
-    CREATE TABLE indonesia AS
-    SELECT geometry
-    FROM ST_Read('countries.geojson')
-    WHERE properties->>'ADMIN' = 'Indonesia'
-""")
-print("Indonesia boundary loaded", flush=True)
+def get_indonesia_boundary(con):
+    click.echo("Fetching Indonesia boundary...")
+    url = "https://raw.githubusercontent.com/datasets/geo-countries/master/data/countries.geojson"
+    urllib.request.urlretrieve(url, "/tmp/countries.geojson")
 
-print("Running extraction...", flush=True)
-con.execute("""
-COPY (
-    SELECT DISTINCT ON (names.primary)
-        names.primary AS street_name,
-        regexp_replace(
-            regexp_replace(sources[1].record_id, '^w', ''),
-            '@[0-9]+$', ''
-        ) AS osm_way_id,
-        sources[1].dataset AS source_dataset,
-        ST_AsText(s.geometry) AS geometry_wkt
-    FROM read_parquet(
-        's3://overturemaps-us-west-2/release/2026-03-18.0/theme=transportation/type=segment/*',
-        hive_partitioning=1
-    ) s, indonesia i
-    WHERE s.bbox.xmin BETWEEN 95 AND 141
-      AND s.bbox.ymin BETWEEN -11 AND 6
-      AND names.primary IS NOT NULL
-      AND length(trim(names.primary)) > 1
-      AND names.primary NOT LIKE '%*%'
-      AND names.primary != ''
-      AND ST_Within(ST_Centroid(s.geometry), i.geometry)
-    ORDER BY street_name
-) TO 'data/indonesia_streets.parquet' (FORMAT parquet, COMPRESSION 'zstd');
-""")
+    # Inspect columns from ST_Read to find the right name field
+    cols = con.execute("DESCRIBE SELECT * FROM ST_Read('/tmp/countries.geojson') LIMIT 1").fetchall()
+    col_names = [c[0] for c in cols]
+    click.echo(f"GeoJSON columns: {col_names}")
 
-count = con.execute("SELECT count(*) FROM 'data/indonesia_streets.parquet'").fetchone()[0]
-print(f"Done! {count:,} rows", flush=True)
+    # Try known country name fields in order
+    for field in ("ADMIN", "NAME", "name", "NAME_EN"):
+        if field in col_names:
+            con.execute(f"""
+                CREATE OR REPLACE TABLE indonesia AS
+                SELECT geometry FROM ST_Read('/tmp/countries.geojson')
+                WHERE {field} = 'Indonesia'
+            """)
+            click.echo(f"Indonesia boundary loaded (field: {field})")
+            return
 
-print("Writing sample...", flush=True)
-con.execute("""
-COPY (
-    SELECT street_name, osm_way_id, source_dataset
-    FROM 'data/indonesia_streets.parquet'
-    LIMIT 100
-) TO 'data/sample.csv' (HEADER, DELIMITER ',');
-""")
+    raise RuntimeError(f"No country name field found in: {col_names}")
+
+
+@click.group()
+def cli():
+    """Indonesia street names dataset tools."""
+    pass
+
+
+@cli.command()
+@click.option("--release", default="2026-03-18.0", show_default=True, help="Overture Maps release version")
+@click.option("--output", default="data/indonesia_streets.parquet", show_default=True, help="Output parquet path")
+@click.option("--sample", default="data/sample.csv", show_default=True, help="Sample CSV path")
+@click.option("--sample-size", default=100, show_default=True, help="Number of rows in sample")
+def extract(release, output, sample, sample_size):
+    """Extract all named streets in Indonesia from Overture Maps."""
+    os.makedirs(os.path.dirname(output), exist_ok=True)
+
+    click.echo("Connecting to DuckDB...")
+    con = duckdb.connect()
+    con.execute("INSTALL httpfs; LOAD httpfs;")
+    con.execute("INSTALL spatial; LOAD spatial;")
+    con.execute("SET s3_region='us-west-2';")
+
+    get_indonesia_boundary(con)
+
+    click.echo(f"Extracting from Overture release {release}...")
+    con.execute(f"""
+    COPY (
+        SELECT DISTINCT ON (names.primary)
+            names.primary AS street_name,
+            regexp_replace(
+                regexp_replace(sources[1].record_id, '^w', ''),
+                '@[0-9]+$', ''
+            ) AS osm_way_id,
+            sources[1].dataset AS source_dataset,
+            ST_AsText(s.geometry) AS geometry_wkt
+        FROM read_parquet(
+            's3://overturemaps-us-west-2/release/{release}/theme=transportation/type=segment/*',
+            hive_partitioning=1
+        ) s, indonesia i
+        WHERE s.bbox.xmin BETWEEN 95 AND 141
+          AND s.bbox.ymin BETWEEN -11 AND 6
+          AND names.primary IS NOT NULL
+          AND length(trim(names.primary)) > 1
+          AND names.primary NOT LIKE '%*%'
+          AND names.primary != ''
+          AND ST_Within(ST_Centroid(s.geometry), i.geometry)
+        ORDER BY street_name
+    ) TO '{output}' (FORMAT parquet, COMPRESSION 'zstd');
+    """)
+
+    count = con.execute(f"SELECT count(*) FROM '{output}'").fetchone()[0]
+    click.echo(f"Done! {count:,} rows written to {output}")
+
+    click.echo(f"Writing {sample_size}-row sample to {sample}...")
+    con.execute(f"""
+    COPY (
+        SELECT street_name, osm_way_id, source_dataset
+        FROM '{output}'
+        LIMIT {sample_size}
+    ) TO '{sample}' (HEADER, DELIMITER ',');
+    """)
+    click.echo("Done.")
+
+
+if __name__ == "__main__":
+    cli()

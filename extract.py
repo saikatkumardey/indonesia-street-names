@@ -25,6 +25,9 @@ COPY (
     WHERE bbox.xmin BETWEEN 95 AND 141
       AND bbox.ymin BETWEEN -11 AND 6
       AND names.primary IS NOT NULL
+      AND length(trim(names.primary)) > 1
+      AND names.primary NOT LIKE '%*%'
+      AND names.primary != ''
     ORDER BY street_name
 ) TO 'indonesia_streets.csv' (HEADER, DELIMITER ',');
 """)

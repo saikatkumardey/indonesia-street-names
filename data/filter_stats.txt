@@ -1,13 +1,13 @@
 Filter stats
 ============
-Input parquet  : /home/claude-user/indonesia-street-names/data/indonesia_streets.parquet
-Output parquet : /home/claude-user/indonesia-street-names/data/indonesia_streets_filtered.parquet
+Input parquet  : data/indonesia_streets.parquet
+Output parquet : data/indonesia_streets_filtered.parquet
 Rows before    : 288,507
-Rows after     : 156,755
-Rows removed   : 131,752
-% retained     : 54.33%
-Total time (s) : 177.5
+Rows after     : 156,799
+Rows removed   : 131,708
+% retained     : 54.35%
+Total time (s) : 209.3
 Method         : interior grid points (ray-casting)
-Grid step      : 0.05°
+Grid step      : 0.05 deg
 S2 fine level  : 10 (exact match only)  unique cells: 25,956
 Province count : 34

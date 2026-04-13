@@ -24,11 +24,14 @@ jobs:
       - name: Run extraction
         run: uv run python scripts/extract.py extract
 
+      - name: Filter to Indonesia only (S2)
+        run: uv run python scripts/extract.py filter
+
       - name: Commit results
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/indonesia_streets.parquet data/sample.csv
+          git add data/indonesia_streets.parquet data/indonesia_streets_filtered.parquet data/sample.csv data/filter_stats.txt
           git diff --staged --quiet || git commit -m "update dataset [$(date -u +%Y-%m-%d)]"
           git pull --rebase origin main
           git push

@@ -9,7 +9,7 @@ import click
 
 
 @click.command()
-@click.option("--input", "input_path", default="data/indonesia_streets.parquet", show_default=True)
+@click.option("--input", "input_path", default="data/indonesia_streets_filtered.parquet", show_default=True)
 @click.option("--output", "output_path", default="data/map.png", show_default=True)
 @click.option("--width", default=4000, show_default=True, help="Output image width in pixels")
 @click.option("--height", default=2333, show_default=True, help="Output image height in pixels")

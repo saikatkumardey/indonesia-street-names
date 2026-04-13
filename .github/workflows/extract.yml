@@ -32,6 +32,6 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add data/indonesia_streets.parquet data/indonesia_streets_filtered.parquet data/sample.csv data/filter_stats.txt
-          git diff --staged --quiet || git commit -m "update dataset [$(date -u +%Y-%m-%d)]"
           git pull --rebase origin main
+          git diff --staged --quiet || git commit -m "update dataset [$(date -u +%Y-%m-%d)]"
           git push

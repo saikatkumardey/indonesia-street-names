@@ -10,6 +10,7 @@ dependencies = [
     "numpy",
     "pandas",
     "pillow",
+    "pyarrow",
     "s2sphere",
     "shapely",
 ]

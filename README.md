@@ -65,6 +65,28 @@ df = duckdb.query("""
 """).df()
 ```
 
+## Fun Stats
+
+| Stat | Value |
+|------|-------|
+| Total streets | 141,358 |
+| Median name length | 18 chars |
+| Shortest | `Gg.` (3 chars) |
+| Longest | 89 chars — a full address crammed into the name field |
+| Typical word count | 3 words (43% of streets) |
+| Numbered streets | 63,751 (45%) — end in roman or arabic numeral |
+| Named after people | ~1,019 — follow "Jalan H. / K.H. / Dr." pattern |
+
+**Most common words** (after stripping Jalan/Gang/Lorong):
+
+| Word | Count | Meaning |
+|------|-------|---------|
+| Raya | 6,072 | Main / grand road |
+| Haji | 5,049 | Named after Hajj pilgrims |
+| Timur / Barat / Utara / Selatan | 3,600 / 3,261 / 2,651 / 2,244 | Cardinal directions |
+| Indah / Asri / Permai / Jaya | ~3,000 each | Beautiful / peaceful / prosperous — housing estate names |
+| Taman / Bukit / Gunung | ~1,900 / 1,237 / 1,387 | Garden / hill / mountain |
+
 ## Updating
 
 Workflows under **Actions**:

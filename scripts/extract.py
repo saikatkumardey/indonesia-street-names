@@ -474,5 +474,28 @@ def sample(input_path, output, size):
     click.echo(f"Written {size} rows to {output}")
 
 
+# Street type prefixes that confirm a row is a real Indonesian street
+STREET_PREFIX_PATTERN = re.compile(
+    r'^(jalan|jl\.?|gang|gg\.?|lorong|lr\.?|bulevar)\b',
+    re.IGNORECASE
+)
+
+
+@cli.command("clean")
+@click.option("--input", "input_path", default="data/indonesia_streets_enriched.parquet", show_default=True, help="Source parquet path")
+@click.option("--output", default="data/indonesia_streets_clean.parquet", show_default=True, help="Output parquet path")
+def clean_cmd(input_path, output):
+    """Filter to streets with a confirmed Indonesian street-type prefix (Jalan/Gang/Lorong/etc)."""
+    df = pd.read_parquet(input_path)
+    n_before = len(df)
+    mask = df["street_name"].str.match(STREET_PREFIX_PATTERN, na=False)
+    df_clean = df[mask].reset_index(drop=True)
+    n_after = len(df_clean)
+    click.echo(f"{n_before:,} → {n_after:,} streets ({100*n_after/n_before:.1f}% retained, {n_before-n_after:,} removed)")
+    Path(output).parent.mkdir(parents=True, exist_ok=True)
+    df_clean.to_parquet(output, index=False)
+    click.echo(f"Wrote {output}")
+
+
 if __name__ == "__main__":
     cli()

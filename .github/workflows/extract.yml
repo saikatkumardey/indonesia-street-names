@@ -30,14 +30,17 @@ jobs:
       - name: Enrich with province metadata
         run: uv run python scripts/extract.py enrich
 
+      - name: Clean (prefix filter)
+        run: uv run python scripts/extract.py clean
+
       - name: Regenerate sample
-        run: uv run python scripts/extract.py sample
+        run: uv run python scripts/extract.py sample --input data/indonesia_streets_clean.parquet
 
       - name: Commit results
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/indonesia_streets.parquet data/indonesia_streets_filtered.parquet data/indonesia_streets_enriched.parquet data/sample.csv data/filter_stats.txt
+          git add data/indonesia_streets.parquet data/indonesia_streets_filtered.parquet data/indonesia_streets_enriched.parquet data/indonesia_streets_clean.parquet data/sample.csv data/filter_stats.txt
           git diff --staged --quiet || git commit -m "update dataset [$(date -u +%Y-%m-%d)]"
           git pull --rebase --autostash origin main
           git push

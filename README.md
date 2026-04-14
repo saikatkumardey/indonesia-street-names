@@ -5,7 +5,7 @@
 
 A dataset of every uniquely named street in Indonesia, extracted from [Overture Maps](https://overturemaps.org/).
 
-**156,799 unique street names** across 34 provinces. Each street is S2-filtered to Indonesia and enriched with province metadata.
+**141,358 confirmed street names** across 34 provinces (Jalan/Gang/Lorong prefix required). S2-filtered to Indonesia, enriched with province metadata.
 
 ![Every named street in Indonesia](data/map.png)
 
@@ -13,8 +13,9 @@ A dataset of every uniquely named street in Indonesia, extracted from [Overture 
 
 | File | Description |
 |------|-------------|
-| `data/indonesia_streets_enriched.parquet` | Full dataset with province metadata (16MB) |
-| `data/indonesia_streets_filtered.parquet` | S2-filtered, no province enrichment (16MB) |
+| `data/indonesia_streets_clean.parquet` | **Primary dataset**: confirmed street names (Jalan/Gang/Lorong prefix), province metadata (13MB) |
+| `data/indonesia_streets_enriched.parquet` | All S2-filtered streets with province, including non-prefixed names (16MB) |
+| `data/indonesia_streets_filtered.parquet` | S2-filtered only, no province enrichment (16MB) |
 | `data/indonesia_streets.parquet` | Raw bbox extract, includes minor border overlap (18MB) |
 | `data/sample.csv` | 100-row random preview |
 
@@ -58,7 +59,7 @@ import duckdb
 # Query directly — no download needed
 df = duckdb.query("""
     SELECT street_name, province, osm_way_id
-    FROM 'https://github.com/saikatkumardey/indonesia-street-names/raw/main/data/indonesia_streets_enriched.parquet'
+    FROM 'https://github.com/saikatkumardey/indonesia-street-names/raw/main/data/indonesia_streets_clean.parquet'
     WHERE province = 'JakartaRaya'
       AND street_name ILIKE 'jalan sudirman%'
 """).df()

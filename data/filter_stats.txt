@@ -3,10 +3,10 @@ Filter stats
 Input parquet  : data/indonesia_streets.parquet
 Output parquet : data/indonesia_streets_filtered.parquet
 Rows before    : 288,507
-Rows after     : 156,799
-Rows removed   : 131,708
-% retained     : 54.35%
-Total time (s) : 209.3
+Rows after     : 156,832
+Rows removed   : 131,675
+% retained     : 54.36%
+Total time (s) : 185.7
 Method         : interior grid points (ray-casting)
 Grid step      : 0.05 deg
 S2 fine level  : 10 (exact match only)  unique cells: 25,956

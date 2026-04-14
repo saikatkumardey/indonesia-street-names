@@ -13,9 +13,9 @@ A dataset of every uniquely named street in Indonesia, extracted from [Overture 
 
 | File | Description |
 |------|-------------|
-| `data/indonesia_streets_enriched.parquet` | Full dataset with province metadata (~16MB) |
-| `data/indonesia_streets_filtered.parquet` | S2-filtered only, no enrichment |
-| `data/indonesia_streets.parquet` | Raw bbox extract (includes minor border overlap) |
+| `data/indonesia_streets_enriched.parquet` | Full dataset with province metadata (16MB) |
+| `data/indonesia_streets_filtered.parquet` | S2-filtered, no province enrichment (16MB) |
+| `data/indonesia_streets.parquet` | Raw bbox extract, includes minor border overlap (18MB) |
 | `data/sample.csv` | 100-row random preview |
 
 ### Schema

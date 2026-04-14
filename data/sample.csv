@@ -1,101 +1,101 @@
-street_name,osm_way_id,source_dataset
-"""Dry"" Trail",242080001,OpenStreetMap
-"""E2"" Entrance",671751678,OpenStreetMap
-"""New Zealand"" Trail",1115458136,OpenStreetMap
-"""Wet"" Trail",1209670090,OpenStreetMap
-"#Bobonaroroad",1338645175,OpenStreetMap
-(Akses Khusus Pejalan Kaki),1377688328,OpenStreetMap
-(Akses ke Masjid Al-Mukarramah),653194585,OpenStreetMap
-..,909576837,OpenStreetMap
-1 (Daya) Alley,169127170,OpenStreetMap
-1 Kampung Merinding,730958688,OpenStreetMap
-1 Wheely up Chris Birch,1090648280,OpenStreetMap
-1-8 Jalan Tondong - Batu Kawa,r18846697,OpenStreetMap
-1-One Trail,610343654,OpenStreetMap
-1.2km,1479329194,OpenStreetMap
-1.2km (pink),1479329175,OpenStreetMap
-1.7km,1479329181,OpenStreetMap
-1/4 Jalan Menuju Sasando,125278460,OpenStreetMap
-10,990249500,OpenStreetMap
-10 Kampung Merinding,730958897,OpenStreetMap
-100% Shop,1073810675,OpenStreetMap
-1030,518279026,OpenStreetMap
-105 Henderson Crescent Lobby Drive-Through,688265310,OpenStreetMap
-107-220,398917850,OpenStreetMap
-11,990249499,OpenStreetMap
-12,990249497,OpenStreetMap
-12 Corners,469086647,OpenStreetMap
-12/1,142275035,OpenStreetMap
-120m climb,1206101629,OpenStreetMap
-125-21,518493510,OpenStreetMap
-13,1019722517,OpenStreetMap
-13 Nopember,492632035,OpenStreetMap
-130-36,518481281,OpenStreetMap
-1380 Trail,1267118547,OpenStreetMap
-14,1019722516,OpenStreetMap
-14th Century Walk,528897497,OpenStreetMap
-15,791555011,OpenStreetMap
-15-e Kampung Chendor,758898056,OpenStreetMap
-150 Steps,1288570378,OpenStreetMap
-16,559111922,OpenStreetMap
-162-7,46128672,OpenStreetMap
-166m,1479329209,OpenStreetMap
-17,559111923,OpenStreetMap
-17-8-45;17-8-23,1296348722,OpenStreetMap
-182,724692485,OpenStreetMap
-182m,1479370753,OpenStreetMap
-185-2,518488086,OpenStreetMap
-189-22,515893562,OpenStreetMap
-19,559111918,OpenStreetMap
-19 Kampung Ganggarak,746876765,OpenStreetMap
-19 Residency,493819414,OpenStreetMap
-1st Avenue,219131969,OpenStreetMap
-2 Bougenvile 1,569568613,OpenStreetMap
-2 Jalan BP 14,399065057,OpenStreetMap
-2 Kampung Merinding,746876734,OpenStreetMap
-2 Kampung Tok Betuk,656406087,OpenStreetMap
-20 Unit 3,273414142,OpenStreetMap
-2019 Trail,1268173147,OpenStreetMap
-21 Unit 3,274197386,OpenStreetMap
-22,559111861,OpenStreetMap
-22 Lane,1051208307,OpenStreetMap
-221,518488054,OpenStreetMap
-221-2,518488073,OpenStreetMap
-23,559111869,OpenStreetMap
-24,559111873,OpenStreetMap
-24 Bukit Chermin,592408550,OpenStreetMap
-24-hour Linkway,687005215,OpenStreetMap
-24-hour linkway,1294938308,OpenStreetMap
-25,559111863,OpenStreetMap
-262,518235271,OpenStreetMap
-264m,1479377463,OpenStreetMap
-27,559111919,OpenStreetMap
-276m,1479329174,OpenStreetMap
-28,559111891,OpenStreetMap
-29,559111889,OpenStreetMap
-29 Lane,1051208428,OpenStreetMap
-2K,1414909103,OpenStreetMap
-2nd Aveune,219131899,OpenStreetMap
-2nd Friendship Bridge Thailand-Malaysia,208514587,OpenStreetMap
-2nd Level Connecting Path,585584644,OpenStreetMap
-3 Brothers Trail,1268173144,OpenStreetMap
-3 Brothers' Trail,1300655996,OpenStreetMap
-3 Kampung Tok Betuk,656386023,OpenStreetMap
-3 Multi Gudang Kawasan Industri,570166863,OpenStreetMap
-3 Sisters Trail,1267118527,OpenStreetMap
-3 Stone,541911373,OpenStreetMap
-3 Waterfall Trail,1266030003,OpenStreetMap
-30,559111859,OpenStreetMap
-30 Bukit Chermin,597321060,OpenStreetMap
-30 Dover Avenue,1467975651,OpenStreetMap
-31,559111860,OpenStreetMap
-311m,1479329202,OpenStreetMap
-32,559111880,OpenStreetMap
-33,559111931,OpenStreetMap
-336-19,518967950,OpenStreetMap
-340m,1479329200,OpenStreetMap
-35-092-11K,445311077,OpenStreetMap
-362m,1479329204,OpenStreetMap
-376m,1479370754,OpenStreetMap
-377A Drop-off Point,927208800,OpenStreetMap
-39-32,398340661,OpenStreetMap
+street_name,osm_way_id,source_dataset,province
+Jalan Kamboja V,160825905,OpenStreetMap,SumateraUtara
+Jalan Samping RSUD Cimacan,594951408,OpenStreetMap,JawaBarat
+Jalan Johar I,978429029,OpenStreetMap,JawaBarat
+Jalan Cibodas I,935683490,OpenStreetMap,JawaBarat
+Jalan Kresna III,229626009,OpenStreetMap,JawaBarat
+Jalan Sutera Palmyra IB,573387687,OpenStreetMap,Banten
+Orchid Raya,204081966,OpenStreetMap,SulawesiSelatan
+trek curug lawe dan benowo,1188446796,OpenStreetMap,JawaTengah
+Jl. Dharmawangsa II,833593314,OpenStreetMap,JawaBarat
+Jalan Krendang Utara Gang IV,492702858,OpenStreetMap,JakartaRaya
+Jalan Sunter Jaya VI A,956449716,OpenStreetMap,JakartaRaya
+Jalan Ksatria,221700451,OpenStreetMap,JawaBarat
+Gang Tenang,138136118,OpenStreetMap,KalimantanTimur
+Jalan Meditran VIII,1223827858,OpenStreetMap,Banten
+Jalan Maizonet Lidah Kulon II,428903420,OpenStreetMap,JawaTimur
+Jalan Tanah Merah IV Gang Selada,156519534,OpenStreetMap,JawaTimur
+Jalan Sei Putih Baru,54580857,OpenStreetMap,SumateraUtara
+Jalan Cikampek 10,685814602,OpenStreetMap,JawaBarat
+Jalan Puspogiwang Dalam V,182321063,OpenStreetMap,JawaTengah
+Gang LDII 8,1061688382,OpenStreetMap,Banten
+Jalan Perumahan Sail Mekar Baru,653139654,OpenStreetMap,Riau
+Jalan Pare I,711202111,OpenStreetMap,JawaBarat
+Jalan Taman Gunung Anyar,464656150,OpenStreetMap,JawaTimur
+Jalan Merpati Gang Pipiti XVI,577019661,OpenStreetMap,Bali
+Jalan TPA I,514115207,OpenStreetMap,JakartaRaya
+Jalan Dharma Wanita,302906562,OpenStreetMap,Bengkulu
+Mutiara Hijau,742399736,OpenStreetMap,SulawesiSelatan
+Jalan Ibnu Taimia,540117013,OpenStreetMap,Banten
+Gang Haji Safri Kisam,512761777,OpenStreetMap,JakartaRaya
+Jalan Merbabu XI,568880371,OpenStreetMap,Banten
+Gang Haji Porod,698802260,OpenStreetMap,JawaBarat
+Jalan Agung Lestari,540138562,OpenStreetMap,KalimantanBarat
+Jalan Layur V,229291192,OpenStreetMap,Yogyakarta
+Jalan Tamako I,137928877,OpenStreetMap,SulawesiTengah
+Jalan Gegerkalong Tengah 9,520142437,OpenStreetMap,JawaBarat
+Jalan Gayungsari Timur VIII,782039662,OpenStreetMap,JawaTimur
+Jalan Kencana Baru II,30831717,OpenStreetMap,JakartaRaya
+Jalan Ciujung,717439826,OpenStreetMap,JawaBarat
+Jalan Btari Raya Utara,704622123,OpenStreetMap,JawaBarat
+Ktm Resort,55949499,OpenStreetMap,KepulauanRiau
+Jalan Bringin II,583868362,OpenStreetMap,JawaTengah
+Jalan Teuku Umar 1,190739290,OpenStreetMap,SulawesiSelatan
+Sobontoro Indah Blok H,545593745,OpenStreetMap,JawaTimur
+Gang Sarmun,1105220212,OpenStreetMap,SumateraUtara
+Gang Biola 2,527137002,OpenStreetMap,KalimantanTimur
+Jalan Kanguru Tengah,563304379,OpenStreetMap,JawaTengah
+Jalan Zam-Zam 3,480748720,OpenStreetMap,Banten
+Jalan Mannuruki 13,190771924,OpenStreetMap,SulawesiSelatan
+"Gang C ""Cempaka""",528379863,OpenStreetMap,JakartaRaya
+Jalan Banjarsari,530942883,OpenStreetMap,JawaBarat
+Jalan Lombok Timur 5,808278542,OpenStreetMap,NusaTenggaraBarat
+Jalan Kali Ringin,580322483,OpenStreetMap,JawaTengah
+Jalan Serdako Usman Ali,190745440,OpenStreetMap,SulawesiSelatan
+Jalan Malaka Biru V,27536439,OpenStreetMap,JakartaRaya
+Gang Hakim,505322479,OpenStreetMap,SumateraUtara
+Jalan Hormen Maddati,119685717,OpenStreetMap,BangkaBelitung
+Jalan Mediterania Garden,453923830,OpenStreetMap,JakartaRaya
+Jalan Srondol Bumi Indah II,476945522,OpenStreetMap,JawaTengah
+Jalan Sidomukti 4 Kalipuro,674426041,OpenStreetMap,JawaTimur
+Jalan Gladiol,560612124,OpenStreetMap,SumateraUtara
+Gang Punikasih - Goak,190135167,OpenStreetMap,NusaTenggaraBarat
+Jalan Listrik III,721809128,OpenStreetMap,JawaBarat
+Jln. Tengku Said,1247335269,OpenStreetMap,Riau
+Jalan Selambo VI B,160423178,OpenStreetMap,SumateraUtara
+Jalan Gemblongan III,1116088960,OpenStreetMap,JawaTimur
+Jalan Cempaka II,711977912,OpenStreetMap,Bali
+Jalur 6 Tahap 2 CMR,1305032860,OpenStreetMap,KalimantanTengah
+Jalan Blok Nambo,1295626455,OpenStreetMap,JawaBarat
+Gang Kong Nasan Bewok,1099439294,OpenStreetMap,JawaBarat
+Gang Sekepondok 1,320605214,OpenStreetMap,JawaBarat
+Jalan Wadas VI,1236718192,OpenStreetMap,JawaBarat
+Jalan Manggarai Utara VIII,1252911693,OpenStreetMap,JakartaRaya
+JalanSMAN 3,315785905,OpenStreetMap,KalimantanSelatan
+Jalan Paralel Tol,283901819,OpenStreetMap,KalimantanBarat
+Jalan Bendul Merisi Jaya IV,159852270,OpenStreetMap,JawaTimur
+Terowongan Inspeksi Saguling,1314139160,OpenStreetMap,JawaBarat
+Jalan South Spark II,1307622681,OpenStreetMap,JawaBarat
+Gang Mandarin,1224697011,OpenStreetMap,Lampung
+Jalan Tebet Timur III E,29085835,OpenStreetMap,JakartaRaya
+Jalan Nadine D,1009981141,OpenStreetMap,JawaBarat
+Jalan Pondok Kelapa V B,121402358,OpenStreetMap,JakartaRaya
+Gang Vand Iskandar Baksir 4,1013646667,OpenStreetMap,Bengkulu
+Jalan Ngagel Jaya Selatan IV Buntu,583623016,OpenStreetMap,JawaTimur
+Jalan Delta Raya III,159988786,OpenStreetMap,JawaTimur
+Gang Haji Kecil,1104732756,OpenStreetMap,Banten
+Jalan Pipa Air Lorong I,137928908,OpenStreetMap,SulawesiTengah
+Lisvie Village A1,1346369646,OpenStreetMap,JawaBarat
+Jalan Suprapto IV,237353670,OpenStreetMap,KalimantanBarat
+Jalan Botany Garden 7,1308575606,OpenStreetMap,JakartaRaya
+Jalan Denta,383585748,OpenStreetMap,Yogyakarta
+Gang Pesantren Suweng,618405255,OpenStreetMap,JawaBarat
+Jalan Cikunir Raya,555067495,OpenStreetMap,JawaBarat
+D'Green Nosari,1469142790,OpenStreetMap,JawaTengah
+Jalan Kencana Wangi VII,185929135,OpenStreetMap,JawaBarat
+Jalan Graha Famili Utara VI,344699423,OpenStreetMap,JawaTimur
+Gang R. Janoko,497801310,OpenStreetMap,JakartaRaya
+Blok D VI,430184357,OpenStreetMap,Banten
+Jalan Perumahan Casa Rivera,1299918313,OpenStreetMap,Riau
+Jalan Sidosermo Airdas II,584826762,OpenStreetMap,JawaTimur
+Jalan Adiwinata,245486740,OpenStreetMap,JawaBarat

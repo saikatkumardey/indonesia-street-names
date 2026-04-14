@@ -4,3 +4,4 @@ __pycache__/
 countries.geojson
 .venv/
 data/indonesia_boundary.geojson
+data/indonesia_boundary_l2.geojson

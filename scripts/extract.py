@@ -345,17 +345,129 @@ def filter_cmd(input_path, output, boundary):
 
 @cli.command()
 @click.option("--input", "input_path", default="data/indonesia_streets_filtered.parquet", show_default=True, help="Source parquet path")
+@click.option("--output", default="data/indonesia_streets_enriched.parquet", show_default=True, help="Output parquet path")
+@click.option("--boundary", default="data/indonesia_boundary.geojson", show_default=True, help="Province boundary GeoJSON")
+@click.option("--kabupaten/--no-kabupaten", default=True, show_default=True, help="Also assign kabupaten/kota (downloads ~60MB GADM L2 file)")
+def enrich(input_path, output, boundary, kabupaten):
+    """Enrich filtered streets with province and kabupaten/kota metadata."""
+    from shapely.geometry import shape, Point
+    from shapely.strtree import STRtree
+    from shapely import wkt as shapely_wkt
+
+    t0 = time.time()
+
+    # --- Load province polygons ---
+    click.echo("[1] Loading province boundaries...")
+    gj = _load_geojson(boundary)
+    prov_shapes, prov_names = [], []
+    for feat in gj.get("features", []):
+        props = feat.get("properties", {})
+        name = (props.get("NAME_1") or props.get("name") or props.get("NAME") or "Unknown")
+        prov_shapes.append(shape(feat["geometry"]))
+        prov_names.append(name)
+    prov_tree = STRtree(prov_shapes)
+    click.echo(f"  {len(prov_shapes)} provinces")
+
+    # --- Optionally load kabupaten/kota ---
+    kab_tree, kab_names = None, []
+    if kabupaten:
+        kab_path = Path("data/indonesia_boundary_l2.geojson")
+        kab_url = "https://geodata.ucdavis.edu/gadm/gadm4.1/json/gadm41_IDN_2.json"
+        click.echo("[2] Loading kabupaten/kota boundaries...")
+        if kab_path.exists():
+            click.echo(f"  Using cached: {kab_path}")
+            with open(kab_path) as f:
+                kab_gj = json.load(f)
+        else:
+            click.echo(f"  Downloading {kab_url} ...")
+            import urllib.request
+            with urllib.request.urlopen(kab_url, timeout=300) as resp:
+                raw = resp.read()
+            kab_gj = json.loads(raw)
+            with open(kab_path, "w") as f:
+                json.dump(kab_gj, f)
+            click.echo(f"  Cached to {kab_path}")
+        kab_shapes = []
+        for feat in kab_gj.get("features", []):
+            props = feat.get("properties", {})
+            type_ = props.get("ENGTYPE_2", "")
+            name = props.get("NAME_2", "Unknown")
+            kab_shapes.append(shape(feat["geometry"]))
+            kab_names.append(f"{type_} {name}".strip() if type_ else name)
+        kab_tree = STRtree(kab_shapes)
+        click.echo(f"  {len(kab_shapes)} kabupaten/kota")
+
+    # --- Load streets ---
+    click.echo("[3] Loading parquet...")
+    df = pd.read_parquet(input_path)
+    n = len(df)
+    click.echo(f"  {n:,} rows")
+
+    # --- Assign province + kabupaten ---
+    click.echo("[4] Assigning province/kabupaten...")
+    provinces, kabupaten_col = [], []
+    t_assign = time.time()
+
+    for i, wkt_str in enumerate(df["geometry_wkt"]):
+        try:
+            centroid = shapely_wkt.loads(wkt_str).centroid
+            pt = Point(centroid.x, centroid.y)
+
+            # Province
+            hits = prov_tree.query(pt, predicate="intersects")
+            prov = prov_names[int(hits[0])] if len(hits) > 0 else prov_names[int(prov_tree.nearest(pt))]
+            provinces.append(prov)
+
+            # Kabupaten
+            if kab_tree is not None:
+                hits2 = kab_tree.query(pt, predicate="intersects")
+                kab = kab_names[int(hits2[0])] if len(hits2) > 0 else kab_names[int(kab_tree.nearest(pt))]
+                kabupaten_col.append(kab)
+        except Exception:
+            provinces.append(None)
+            if kab_tree is not None:
+                kabupaten_col.append(None)
+
+        if i > 0 and i % 10000 == 0:
+            elapsed = time.time() - t_assign
+            rate = i / elapsed
+            eta = (n - i) / rate
+            click.echo(f"  {i:,}/{n:,} ({100*i//n}%) — {rate:.0f} rows/s — ETA {eta:.0f}s")
+
+    click.echo(f"  Done in {time.time() - t_assign:.1f}s")
+
+    df["province"] = provinces
+    if kab_tree is not None:
+        df["kabupaten_kota"] = kabupaten_col
+
+    # Province distribution
+    click.echo("\nProvince distribution:")
+    for prov, cnt in df["province"].value_counts().head(15).items():
+        click.echo(f"  {prov}: {cnt:,}")
+
+    Path(output).parent.mkdir(parents=True, exist_ok=True)
+    df.to_parquet(output, index=False)
+    click.echo(f"\nWrote {len(df):,} rows → {output}  ({time.time()-t0:.1f}s total)")
+
+
+@cli.command()
+@click.option("--input", "input_path", default="data/indonesia_streets_enriched.parquet", show_default=True, help="Source parquet path")
 @click.option("--output", default="data/sample.csv", show_default=True, help="Output CSV path")
 @click.option("--size", default=100, show_default=True, help="Number of rows")
 def sample(input_path, output, size):
-    """Regenerate sample.csv from existing parquet."""
+    """Regenerate sample.csv from existing parquet (random sample)."""
     con = duckdb.connect()
     count = con.execute(f"SELECT count(*) FROM '{input_path}'").fetchone()[0]
     click.echo(f"Source: {count:,} rows")
+    # Use ORDER BY random() for a representative sample
+    cols = con.execute(f"DESCRIBE SELECT * FROM '{input_path}'").fetchall()
+    col_names = [c[0] for c in cols if c[0] != "geometry_wkt"]
+    select_cols = ", ".join(col_names)
     con.execute(f"""
     COPY (
-        SELECT street_name, osm_way_id, source_dataset
+        SELECT {select_cols}
         FROM '{input_path}'
+        ORDER BY random()
         LIMIT {size}
     ) TO '{output}' (HEADER, DELIMITER ',');
     """)
